@@ -1,7 +1,7 @@
 package com.example.my_shopping_list.presentation
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.my_shopping_list.R
@@ -25,5 +25,13 @@ class MainActivity : AppCompatActivity() {
         val shopListRV = findViewById<RecyclerView>(R.id.rv_shop_list)
         shopListAdapter = ShopListAdapter()
         shopListRV.adapter = shopListAdapter
+        shopListRV.recycledViewPool.setMaxRecycledViews(
+            ShopListAdapter.VIEW_TYPE_DISABLED,
+            ShopListAdapter.VIEW_POOL_MAX_SIZE
+        )
+        shopListRV.recycledViewPool.setMaxRecycledViews(
+            ShopListAdapter.VIEW_TYPE_ENABLED,
+            ShopListAdapter.VIEW_POOL_MAX_SIZE
+        )
     }
 }
