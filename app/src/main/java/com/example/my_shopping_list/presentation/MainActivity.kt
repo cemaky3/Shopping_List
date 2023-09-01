@@ -1,5 +1,6 @@
 package com.example.my_shopping_list.presentation
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -7,20 +8,30 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.my_shopping_list.R
+import com.example.my_shopping_list.databinding.ActivityMainBinding
 import com.example.my_shopping_list.domain.ShopItem
+import com.example.my_shopping_list.presentation.ShopItemActivity.Companion.AddItemIntent
+import com.example.my_shopping_list.presentation.ShopItemActivity.Companion.EditItemIntent
 
 class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: MainViewModel
     private lateinit var shopList: MutableList<ShopItem>
     private lateinit var shopListAdapter: ShopListAdapter
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         adapterSetup()
         viewModel.shopList.observe(this) {
             shopListAdapter.submitList(it.toMutableList())
+        }
+        binding.buttonAddShopItem.setOnClickListener {
+            val intent = AddItemIntent(this)
+            startActivity(intent)
         }
     }
 
@@ -40,7 +51,6 @@ class MainActivity : AppCompatActivity() {
         setClickListener()
         setSwipeListener(shopListRV)
     }
-
     private fun setSwipeListener(shopListRV: RecyclerView?) {
         val callBack = object :
             ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
@@ -63,6 +73,8 @@ class MainActivity : AppCompatActivity() {
     private fun setClickListener() {
         shopListAdapter.onShopItemClickListener = {
             Log.d("MainActivity", it.toString())
+            val intent = EditItemIntent(this, it.id)
+            startActivity(intent)
         }
     }
 
