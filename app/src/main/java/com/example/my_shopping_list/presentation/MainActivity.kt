@@ -10,8 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.my_shopping_list.R
 import com.example.my_shopping_list.databinding.ActivityMainBinding
 import com.example.my_shopping_list.domain.ShopItem
-import com.example.my_shopping_list.presentation.ShopItemActivity.Companion.AddItemIntent
-import com.example.my_shopping_list.presentation.ShopItemActivity.Companion.EditItemIntent
+
 
 class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: MainViewModel
@@ -30,7 +29,7 @@ class MainActivity : AppCompatActivity() {
             shopListAdapter.submitList(it.toMutableList())
         }
         binding.buttonAddShopItem.setOnClickListener {
-            val intent = AddItemIntent(this)
+            val intent = ShopItemActivity.AddItemIntent(this)
             startActivity(intent)
         }
     }
@@ -73,7 +72,7 @@ class MainActivity : AppCompatActivity() {
     private fun setClickListener() {
         shopListAdapter.onShopItemClickListener = {
             Log.d("MainActivity", it.toString())
-            val intent = EditItemIntent(this, it.id)
+            val intent = ShopItemActivity.EditItemIntent(this, it.id)
             startActivity(intent)
         }
     }
