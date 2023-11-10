@@ -65,7 +65,7 @@ class ShopItemFragment : Fragment() {
             }
         }
         viewModel.shouldCloseScreen.observe(viewLifecycleOwner) {
-            requireActivity().finish()
+            requireActivity().onBackPressed()
         }
     }
 
@@ -73,6 +73,7 @@ class ShopItemFragment : Fragment() {
         when(screenMode) {
             ADD_MODE -> launchAddMode()
             EDIT_MODE -> launchEditMode()
+            else -> throw RuntimeException("Unknown screen mode $screenMode")
         }
     }
     private fun addTextChangeListeners() {
